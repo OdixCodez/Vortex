@@ -1,0 +1,8 @@
+# Object cache and compiler artifacts folders
+bin/
+obj/
+
+# Local User Settings & Environment profiles
+.vs/
+.vscode/
+*.user
