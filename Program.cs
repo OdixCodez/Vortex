@@ -9,9 +9,6 @@ using System.Threading;
 
 namespace VortexShell
 {
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  MODULE 1 — VORTEX OBJECT PIPELINE ENGINE
-    // ═══════════════════════════════════════════════════════════════════════════
 
     sealed class VortexObject
     {
@@ -32,7 +29,6 @@ namespace VortexShell
             Properties[key] = value;
     }
 
-    // ─── Pipeline Result Container ────────────────────────────────────────────
 
     sealed class PipelineResult
     {
@@ -57,7 +53,6 @@ namespace VortexShell
         public static PipelineResult Empty() => new() { IsRaw = true };
     }
 
-    // ─── Pipeline Renderer ────────────────────────────────────────────────────
 
     static class Renderer
     {
@@ -152,9 +147,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  MODULE 2 — INTERACTIVE REPL KEYSTROKE INTERCEPTOR ENGINE
-    // ═══════════════════════════════════════════════════════════════════════════
 
     sealed class SessionState
     {
@@ -326,9 +318,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  MODULE 3 — WINDOWS TERMINAL FRAGMENT INTEGRATION & AUTO DEPLOYMENT
-    // ═══════════════════════════════════════════════════════════════════════════
 
     static class TerminalDeployment
     {
@@ -426,9 +415,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  MODULE 4 — MULTI-PLATFORM RUNTIME ROUTER & UNMANAGED STREAM INTERCEPTION
-    // ═══════════════════════════════════════════════════════════════════════════
 
     static class ExternalRunner
     {
@@ -505,9 +491,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  MODULE 5 — NATIVE CORE FILE ENGINE & SPECIAL OPERATIONAL BUILT-INS
-    // ═══════════════════════════════════════════════════════════════════════════
 
     static class BuiltIns
     {
@@ -790,7 +773,6 @@ namespace VortexShell
             }
         }
 
-        // ── Private Helpers ───────────────────────────────────────────────────
 
         static void DrawBar(int percent, int width)
         {
@@ -852,9 +834,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  MODULE 6 — NATIVE POWERSHELL CMDLET ALIAS BINDING & COMMAND EVALUATOR
-    // ═══════════════════════════════════════════════════════════════════════════
 
     static class Evaluator
     {
@@ -894,33 +873,27 @@ namespace VortexShell
 
             return cmd switch
             {
-                // ── pwd / Get-Location ────────────────────────────────────────
                 "pwd"
                 or "get-location"
                 or "gl"                              => BuiltIns.Pwd(),
 
-                // ── cd / Set-Location ─────────────────────────────────────────
                 "cd"
                 or "set-location"
                 or "sl"                              => BuiltIns.Cd(args),
 
-                // ── ls / dir / Get-ChildItem ──────────────────────────────────
                 "ls"
                 or "dir"
                 or "get-childitem"
                 or "gci"                             => BuiltIns.Ls(args),
 
-                // ── Get-Process / ps ─────────────────────────────────────────
                 "get-process"
                 or "gps"
                 or "ps"                              => GetProcessSnapshot(args),
 
-                // ── Vortex Special Commands ───────────────────────────────────
                 "vortex-sys"                         => BuiltIns.VortexSys(),
                 "vortex-matrix"                      => RunMatrix(),
                 "vortex-top"                         => RunTop(),
 
-                // ── Terminal Utilities ────────────────────────────────────────
                 "clear"
                 or "cls"
                 or "clear-host"                      => ClearScreen(),
@@ -937,45 +910,37 @@ namespace VortexShell
                 or "get-history"
                 or "h"                               => ShowHistory(session),
 
-                // ── Write / Echo ──────────────────────────────────────────────
                 "echo"
                 or "write-host"
                 or "write-output"                    => WriteOutput(args),
 
-                // ── File Content ──────────────────────────────────────────────
                 "cat"
                 or "get-content"
                 or "gc"
                 or "type"                            => GetContent(args),
 
-                // ── File / Dir Creation ───────────────────────────────────────
                 "mkdir"
                 or "new-item"
                 or "md"                              => NewItem(args),
 
-                // ── Remove ────────────────────────────────────────────────────
                 "rm"
                 or "remove-item"
                 or "del"
                 or "ri"                              => RemoveItem(args),
 
-                // ── Copy ──────────────────────────────────────────────────────
                 "cp"
                 or "copy-item"
                 or "copy"
                 or "ci"                              => CopyItem(args),
 
-                // ── Move ──────────────────────────────────────────────────────
                 "mv"
                 or "move-item"
                 or "move"
                 or "mi"                              => MoveItem(args),
 
-                // ── Measure ───────────────────────────────────────────────────
                 "measure-object"
                 or "measure"                         => MeasureObject(args, session),
 
-                // ── Env Vars ──────────────────────────────────────────────────
                 "get-variable"
                 or "gv"                              => GetVariable(args, session),
 
@@ -986,17 +951,14 @@ namespace VortexShell
                 or "env"
                 or "get-env"                         => GetEnvironment(),
 
-                // ── Version ───────────────────────────────────────────────────
                 "--version"
                 or "-v"
                 or "version"                         => ShowVersion(),
 
-                // ── Fallthrough → OS Shell ────────────────────────────────────
                 _                                    => ExternalRunner.Run(input)
             };
         }
 
-        // ── PowerShell Cmdlet Implementations ────────────────────────────────
 
         static PipelineResult GetProcessSnapshot(string[] args)
         {
@@ -1325,7 +1287,6 @@ namespace VortexShell
             });
         }
 
-        // ── Core REPL Utilities ───────────────────────────────────────────────
 
         static List<string> Tokenize(string input)
         {
@@ -1485,9 +1446,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  SHELL ENTRY POINT
-    // ═══════════════════════════════════════════════════════════════════════════
 
     static class Shell
     {
@@ -1502,7 +1460,7 @@ namespace VortexShell
    ╚████╔╝ ╚██████╔╝██║  ██║   ██║   ███████╗██╔╝ ██╗
     ╚═══╝   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine($"  OdixCodez  ·  v2.0.0  ·  {RuntimeInformation.FrameworkDescription}");
+            Console.WriteLine($"  OdixCodez  ·  v2.0.1  ·  {RuntimeInformation.FrameworkDescription}");
             Console.WriteLine($"  {RuntimeInformation.OSDescription}  ·  {RuntimeInformation.ProcessArchitecture}");
             Console.WriteLine("  Type 'help' for commands. PowerShell Verb-Noun syntax supported.\n");
             Console.ResetColor();
@@ -1555,9 +1513,6 @@ namespace VortexShell
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  PROGRAM
-    // ═══════════════════════════════════════════════════════════════════════════
 
     static class Program
     {
